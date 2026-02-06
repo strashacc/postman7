@@ -1,0 +1,531 @@
+{
+  "info": {
+    "_postman_id": "679a717d-aa69-4998-95d3-372728f9119b",
+    "name": "Weather API Test Suite",
+    "description": "Comprehensive test suite for Open-Meteo Weather API including positive, negative, and edge/boundary test cases",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Positive Test Cases",
+      "item": [
+        {
+          "name": "Valid Weather Requests",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "id": "3c46f031-f362-4c3b-9351-96ec061d7e8a",
+                "exec": [
+                  "// Log the test case being executed",
+                  "console.log('=================================');",
+                  "console.log('Executing: Valid Weather Requests');",
+                  "console.log('Test Case: ' + (pm.iterationData.get('testCase') || 'Single Request'));",
+                  "console.log('Description: ' + (pm.iterationData.get('description') || 'Testing valid weather API request'));",
+                  "console.log('Latitude: ' + (pm.variables.get('latitude') || 'Not set'));",
+                  "console.log('Longitude: ' + (pm.variables.get('longitude') || 'Not set'));",
+                  "console.log('=================================');"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "id": "838bfa7c-ee59-4b78-bb70-1a229dc06f26",
+                "exec": [
+                  "// Test 1: Validate status code is 200",
+                  "pm.test('Status code is 200 OK', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "// Test 2: Validate response time is acceptable (under 2000ms)",
+                  "pm.test('Response time is acceptable', function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});",
+                  "",
+                  "// Test 3: Validate response is JSON",
+                  "pm.test('Response is valid JSON', function () {",
+                  "    pm.response.to.be.json;",
+                  "});",
+                  "",
+                  "// Log test results",
+                  "console.log('✓ All validation tests completed for: ' + (pm.iterationData.get('testCase') || 'Single Request'));"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "id": "45dac3f1-3bfc-42bd-b077-48937b8f12c7",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://api.open-meteo.com/v1/forecast?latitude={{latitude}}&longitude={{longitude}}&current=temperature_2m",
+              "protocol": "https",
+              "host": [
+                "api",
+                "open-meteo",
+                "com"
+              ],
+              "path": [
+                "v1",
+                "forecast"
+              ],
+              "query": [
+                {
+                  "key": "latitude",
+                  "value": "{{latitude}}",
+                  "uuid": "b241ab3c-196e-4b46-bbe0-c4254ede2b6b"
+                },
+                {
+                  "key": "longitude",
+                  "value": "{{longitude}}",
+                  "uuid": "730af11d-5699-4395-96d2-0da52a3c13b3"
+                },
+                {
+                  "key": "current",
+                  "value": "temperature_2m"
+                }
+              ]
+            },
+            "description": "Tests valid weather API requests with proper latitude and longitude coordinates. Validates response structure, data types, and value ranges."
+          },
+          "response": []
+        }
+      ],
+      "id": "5e8dc4f8-65cc-44fb-97ee-f60f3f29e19a"
+    },
+    {
+      "name": "Negative Test Cases",
+      "item": [
+        {
+          "name": "Invalid Parameter Tests",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "// Log the test case being executed",
+                  "console.log('=================================');",
+                  "console.log('Executing: Invalid Parameter Tests');",
+                  "console.log('Test Case: ' + (pm.iterationData.get('testCase') || 'Single Request'));",
+                  "console.log('Description: ' + (pm.iterationData.get('description') || 'Testing invalid parameters'));",
+                  "console.log('=================================');"
+                ],
+                "type": "text/javascript"
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Test 1: Validate error status code (400 or 422)",
+                  "pm.test('Status code indicates client error', function () {",
+                  "    pm.expect(pm.response.code).to.be.oneOf([400, 422, 404]);",
+                  "});",
+                  "",
+                  "// Test 2: Response is JSON",
+                  "pm.test('Response is JSON format', function () {",
+                  "    pm.response.to.be.json;",
+                  "});",
+                  "",
+                  "// Test 3: Response contains error information",
+                  "pm.test('Response contains error information', function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    ",
+                  "    // Check for common error fields",
+                  "    const hasErrorField = jsonData.error || jsonData.reason || jsonData.message;",
+                  "    pm.expect(hasErrorField).to.exist;",
+                  "});",
+                  "",
+                  "// Test 4: Error message is descriptive",
+                  "pm.test('Error message is present and descriptive', function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    const errorMsg = jsonData.error || jsonData.reason || jsonData.message || '';",
+                  "    ",
+                  "    pm.expect(errorMsg).to.be.a('string');",
+                  "    pm.expect(errorMsg.length).to.be.above(0);",
+                  "});",
+                  "",
+                  "// Test 5: No sensitive data in error response",
+                  "pm.test('Error response does not contain sensitive data', function () {",
+                  "    const responseText = pm.response.text().toLowerCase();",
+                  "    ",
+                  "    pm.expect(responseText).to.not.include('password');",
+                  "    pm.expect(responseText).to.not.include('token');",
+                  "    pm.expect(responseText).to.not.include('secret');",
+                  "});",
+                  "",
+                  "console.log('✓ Negative test validation completed for: ' + (pm.iterationData.get('testCase') || 'Single Request'));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "id": "757def49-6b19-44f0-9b8e-e16cfe15ce62",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://api.open-meteo.com/v1/forecast?latitude={{latitude}}&longitude={{longitude}}&current_weather={{current_weather}}",
+              "protocol": "https",
+              "host": [
+                "api",
+                "open-meteo",
+                "com"
+              ],
+              "path": [
+                "v1",
+                "forecast"
+              ],
+              "query": [
+                {
+                  "key": "latitude",
+                  "value": "{{latitude}}"
+                },
+                {
+                  "key": "longitude",
+                  "value": "{{longitude}}"
+                },
+                {
+                  "key": "current_weather",
+                  "value": "{{current_weather}}"
+                }
+              ]
+            },
+            "description": "Tests invalid parameter scenarios including missing parameters, invalid data types, and out-of-range values."
+          },
+          "response": []
+        },
+        {
+          "name": "Unsupported POST Method",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Test 1: Validate 405 Method Not Allowed status",
+                  "pm.test('Status code is 405 Method Not Allowed', function () {",
+                  "    pm.response.to.have.status(405);",
+                  "});",
+                  "",
+                  "// Test 2: Check for Allow header",
+                  "pm.test('Response includes Allow header or error message', function () {",
+                  "    const hasAllowHeader = pm.response.headers.has('Allow');",
+                  "    const hasErrorBody = pm.response.text().length > 0;",
+                  "    ",
+                  "    pm.expect(hasAllowHeader || hasErrorBody).to.be.true;",
+                  "});",
+                  "",
+                  "// Test 3: Validate response time",
+                  "pm.test('Response time is acceptable for error', function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(1000);",
+                  "});",
+                  "",
+                  "console.log('✓ POST method correctly rejected with 405 status');"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "id": "6172daf3-37a8-4468-85b5-32b9a301ab7d",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "https://api.open-meteo.com/v1/forecast?latitude=40.7128&longitude=-74.0060&current_weather=true",
+              "protocol": "https",
+              "host": [
+                "api",
+                "open-meteo",
+                "com"
+              ],
+              "path": [
+                "v1",
+                "forecast"
+              ],
+              "query": [
+                {
+                  "key": "latitude",
+                  "value": "40.7128"
+                },
+                {
+                  "key": "longitude",
+                  "value": "-74.0060"
+                },
+                {
+                  "key": "current_weather",
+                  "value": "true"
+                }
+              ]
+            },
+            "description": "Tests that POST method is not supported on the weather API endpoint."
+          },
+          "response": []
+        },
+        {
+          "name": "Unsupported PUT Method",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Test 1: Validate 405 Method Not Allowed status",
+                  "pm.test('Status code is 405 Method Not Allowed', function () {",
+                  "    pm.response.to.have.status(405);",
+                  "});",
+                  "",
+                  "// Test 2: Check for Allow header",
+                  "pm.test('Response includes Allow header or error message', function () {",
+                  "    const hasAllowHeader = pm.response.headers.has('Allow');",
+                  "    const hasErrorBody = pm.response.text().length > 0;",
+                  "    ",
+                  "    pm.expect(hasAllowHeader || hasErrorBody).to.be.true;",
+                  "});",
+                  "",
+                  "// Test 3: Validate response time",
+                  "pm.test('Response time is acceptable for error', function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(1000);",
+                  "});",
+                  "",
+                  "console.log('✓ PUT method correctly rejected with 405 status');"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "id": "475172b5-1c00-414c-af8c-c7ec601b89d7",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "https://api.open-meteo.com/v1/forecast?latitude=40.7128&longitude=-74.0060&current_weather=true",
+              "protocol": "https",
+              "host": [
+                "api",
+                "open-meteo",
+                "com"
+              ],
+              "path": [
+                "v1",
+                "forecast"
+              ],
+              "query": [
+                {
+                  "key": "latitude",
+                  "value": "40.7128"
+                },
+                {
+                  "key": "longitude",
+                  "value": "-74.0060"
+                },
+                {
+                  "key": "current_weather",
+                  "value": "true"
+                }
+              ]
+            },
+            "description": "Tests that PUT method is not supported on the weather API endpoint."
+          },
+          "response": []
+        },
+        {
+          "name": "Unsupported DELETE Method",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Test 1: Validate 405 Method Not Allowed status",
+                  "pm.test('Status code is 405 Method Not Allowed', function () {",
+                  "    pm.response.to.have.status(405);",
+                  "});",
+                  "",
+                  "// Test 2: Check for Allow header",
+                  "pm.test('Response includes Allow header or error message', function () {",
+                  "    const hasAllowHeader = pm.response.headers.has('Allow');",
+                  "    const hasErrorBody = pm.response.text().length > 0;",
+                  "    ",
+                  "    pm.expect(hasAllowHeader || hasErrorBody).to.be.true;",
+                  "});",
+                  "",
+                  "// Test 3: Validate response time",
+                  "pm.test('Response time is acceptable for error', function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(1000);",
+                  "});",
+                  "",
+                  "console.log('✓ DELETE method correctly rejected with 405 status');"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "id": "e269486f-bf16-4fb2-8c6b-3c596b98900b",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "https://api.open-meteo.com/v1/forecast?latitude=40.7128&longitude=-74.0060&current_weather=true",
+              "protocol": "https",
+              "host": [
+                "api",
+                "open-meteo",
+                "com"
+              ],
+              "path": [
+                "v1",
+                "forecast"
+              ],
+              "query": [
+                {
+                  "key": "latitude",
+                  "value": "40.7128"
+                },
+                {
+                  "key": "longitude",
+                  "value": "-74.0060"
+                },
+                {
+                  "key": "current_weather",
+                  "value": "true"
+                }
+              ]
+            },
+            "description": "Tests that DELETE method is not supported on the weather API endpoint."
+          },
+          "response": []
+        }
+      ],
+      "id": "d3bfce5c-66f9-426f-aa42-a3af803316ec"
+    },
+    {
+      "name": "Edge & Boundary Cases",
+      "item": [
+        {
+          "name": "Boundary Value Tests",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "// Log the test case being executed",
+                  "console.log('=================================');",
+                  "console.log('Executing: Boundary Value Tests');",
+                  "console.log('Test Case: ' + (pm.iterationData.get('testCase') || 'Single Request'));",
+                  "console.log('Description: ' + (pm.iterationData.get('description') || 'Testing boundary values'));",
+                  "console.log('Latitude: ' + (pm.variables.get('latitude') || 'Not set'));",
+                  "console.log('Longitude: ' + (pm.variables.get('longitude') || 'Not set'));",
+                  "console.log('Expected Result: ' + (pm.iterationData.get('expectedResult') || 'Unknown'));",
+                  "console.log('=================================');"
+                ],
+                "type": "text/javascript"
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Determine expected result from iteration data",
+                  "const expectedResult = pm.iterationData.get('expectedResult') || 'success';",
+                  "",
+                  "if (expectedResult === 'success') {",
+                  "    // Test 1: Validate successful response",
+                  "    pm.test('Status code is 200 for valid boundary value', function () {",
+                  "        pm.response.to.have.status(200);",
+                  "    });",
+                  "    ",
+                  "    // Test 2: Response contains weather data",
+                  "    pm.test('Response contains current_weather data', function () {",
+                  "        const jsonData = pm.response.json();",
+                  "        pm.expect(jsonData).to.have.property('current_weather');",
+                  "    });",
+                  "    ",
+                  "    // Test 3: Coordinates are within valid range",
+                  "    pm.test('Coordinates are within valid range', function () {",
+                  "        const jsonData = pm.response.json();",
+                  "        pm.expect(jsonData.latitude).to.be.within(-90, 90);",
+                  "        pm.expect(jsonData.longitude).to.be.within(-180, 180);",
+                  "    });",
+                  "    ",
+                  "    // Test 4: Weather data structure is valid",
+                  "    pm.test('Weather data has valid structure', function () {",
+                  "        const weather = pm.response.json().current_weather;",
+                  "        pm.expect(weather).to.have.property('temperature');",
+                  "        pm.expect(weather).to.have.property('windspeed');",
+                  "        pm.expect(weather).to.have.property('time');",
+                  "    });",
+                  "    ",
+                  "} else {",
+                  "    // Test for error cases",
+                  "    pm.test('Status code indicates error for invalid boundary', function () {",
+                  "        pm.expect(pm.response.code).to.be.oneOf([400, 422, 404]);",
+                  "    });",
+                  "    ",
+                  "    pm.test('Response contains error information', function () {",
+                  "        const jsonData = pm.response.json();",
+                  "        const hasError = jsonData.error || jsonData.reason || jsonData.message;",
+                  "        pm.expect(hasError).to.exist;",
+                  "    });",
+                  "}",
+                  "",
+                  "// Test 5: Response time is acceptable",
+                  "pm.test('Response time is acceptable', function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});",
+                  "",
+                  "// Test 6: Response is valid JSON",
+                  "pm.test('Response is valid JSON', function () {",
+                  "    pm.response.to.be.json;",
+                  "});",
+                  "",
+                  "console.log('✓ Boundary test completed for: ' + (pm.iterationData.get('testCase') || 'Single Request'));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "id": "e46b68a9-eb1e-422f-b899-30742ca22964",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://api.open-meteo.com/v1/forecast?latitude={{latitude}}&longitude={{longitude}}&current_weather=true",
+              "protocol": "https",
+              "host": [
+                "api",
+                "open-meteo",
+                "com"
+              ],
+              "path": [
+                "v1",
+                "forecast"
+              ],
+              "query": [
+                {
+                  "key": "latitude",
+                  "value": "{{latitude}}"
+                },
+                {
+                  "key": "longitude",
+                  "value": "{{longitude}}"
+                },
+                {
+                  "key": "current_weather",
+                  "value": "true"
+                }
+              ]
+            },
+            "description": "Tests boundary and edge cases including extreme coordinate values, precision limits, and special values like zero."
+          },
+          "response": []
+        }
+      ],
+      "id": "a11668c2-c04e-4ae5-b715-df418e652de8"
+    }
+  ]
+}

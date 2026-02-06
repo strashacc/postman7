@@ -1,0 +1,47 @@
+[
+  {
+    "testCase": "Single character city",
+    "city": "Y",
+    "expectedStatus": 200
+  },
+  {
+    "testCase": "Two character city",
+    "city": "Xi",
+    "expectedStatus": 200
+  },
+  {
+    "testCase": "City with numbers",
+    "city": "City17",
+    "expectedStatus": 404
+  },
+  {
+    "testCase": "Lowercase city",
+    "city": "london",
+    "expectedStatus": 200
+  },
+  {
+    "testCase": "UPPERCASE city",
+    "city": "LONDON",
+    "expectedStatus": 200
+  },
+  {
+    "testCase": "Mixed case city",
+    "city": "LoNdOn",
+    "expectedStatus": 200
+  },
+  {
+    "testCase": "City with hyphen",
+    "city": "Winston-Salem",
+    "expectedStatus": 200
+  },
+  {
+    "testCase": "City with apostrophe",
+    "city": "L'Aquila",
+    "expectedStatus": 200
+  },
+  {
+    "testCase": "Very short valid city",
+    "city": "Ur",
+    "expectedStatus": 200
+  }
+]

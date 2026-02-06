@@ -1,0 +1,39 @@
+[
+  {
+    "testCase": "Valid city name",
+    "city": "London",
+    "latitude": 51.509865,
+    "longitude": 0.118092,
+    "expectedStatus": 200
+  },
+  {
+    "testCase": "Valid city with country code",
+    "city": "London,uk",
+    "expectedStatus": 200
+  },
+  {
+    "testCase": "City with spaces",
+    "city": "New York",
+    "expectedStatus": 200
+  },
+  {
+    "testCase": "City with special characters",
+    "city": "São Paulo",
+    "expectedStatus": 200
+  },
+  {
+    "testCase": "Multiple word city",
+    "city": "Los Angeles",
+    "expectedStatus": 200
+  },
+  {
+    "testCase": "City in different language",
+    "city": "München",
+    "expectedStatus": 200
+  },
+  {
+    "testCase": "Small city",
+    "city": "Monaco",
+    "expectedStatus": 200
+  }
+]

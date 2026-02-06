@@ -1,0 +1,42 @@
+[
+  {
+    "testCase": "Empty city parameter",
+    "city": "",
+    "expectedStatus": 400
+  },
+  {
+    "testCase": "Non-existent city",
+    "city": "XYZ123InvalidCity",
+    "expectedStatus": 404
+  },
+  {
+    "testCase": "Only numbers",
+    "city": "12345",
+    "expectedStatus": 404
+  },
+  {
+    "testCase": "Special characters only",
+    "city": "!@#$%",
+    "expectedStatus": 400
+  },
+  {
+    "testCase": "Very long city name",
+    "city": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "expectedStatus": 400
+  },
+  {
+    "testCase": "SQL injection attempt",
+    "city": "London'; DROP TABLE cities;--",
+    "expectedStatus": 400
+  },
+  {
+    "testCase": "Script injection",
+    "city": "<script>alert('test')</script>",
+    "expectedStatus": 400
+  },
+  {
+    "testCase": "Null value",
+    "city": "null",
+    "expectedStatus": 404
+  }
+]
