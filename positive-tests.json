@@ -1,39 +1,67 @@
 [
   {
-    "testCase": "Valid city name",
+    "testCase": "Valid Coordinates",
     "city": "London",
     "latitude": 51.509865,
     "longitude": 0.118092,
+    "current": ["temperature_2m"],
+    "hourly": [],
     "expectedStatus": 200
   },
   {
-    "testCase": "Valid city with country code",
-    "city": "London,uk",
+    "testCase": "Valid Coordinates with Alt Units",
+    "city": "London",
+    "latitude": 51.509865,
+    "longitude": 0.118092,
+    "wind_speed_unit": "mph",
+    "precipitation_unit": "inch",
+    "current": ["temperature_2m"],
+    "hourly": [],
     "expectedStatus": 200
   },
   {
-    "testCase": "City with spaces",
-    "city": "New York",
+    "testCase": "Valid Coordinates with Multiple Current Values",
+    "city": "London",
+    "latitude": 51.509865,
+    "longitude": 0.118092,
+    "current": ["temperature_2m", "apparent_temperature"],
+    "hourly": [],
     "expectedStatus": 200
   },
   {
-    "testCase": "City with special characters",
-    "city": "São Paulo",
+    "testCase": "Multiple Valid Coordinates",
+    "city": "Unknown",
+    "latitude": [52.52, 50.12, 53.55],
+    "longitude": [13.41,8.68,9.99],
+    "current": ["temperature_2m"],
+    "hourly": [],
     "expectedStatus": 200
   },
   {
-    "testCase": "Multiple word city",
-    "city": "Los Angeles",
+    "testCase": "Valid Coordinates with Hourly Forecast",
+    "city": "London",
+    "latitude": 51.509865,
+    "longitude": 0.118092,
+    "current": [],
+    "hourly": ["temperature_2m"],
     "expectedStatus": 200
   },
   {
-    "testCase": "City in different language",
-    "city": "München",
+    "testCase": "Valid Coordinates with Both Current and Hourly Values",
+    "city": "London",
+    "latitude": 51.509865,
+    "longitude": 0.118092,
+    "current": ["temperature_2m"],
+    "hourly": ["temperature_2m"],
     "expectedStatus": 200
   },
   {
-    "testCase": "Small city",
-    "city": "Monaco",
+    "testCase": "No Request Parameters",
+    "city": "London",
+    "latitude": 51.509865,
+    "longitude": 0.118092,
+    "current": [],
+    "hourly": [],
     "expectedStatus": 200
   }
 ]

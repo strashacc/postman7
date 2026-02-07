@@ -1,47 +1,54 @@
 [
   {
-    "testCase": "Single character city",
-    "city": "Y",
-    "expectedStatus": 200
+    "testCase": "Long Coordinates",
+    "city": "London",
+    "wind_speed_unit": "mph",
+    "precipitation_unit": "inch",
+    "latitude": 55.321321321324235323214345234214232342132141,
+    "longitude": 0.11809257748934758945897348957348758937587236478362476237635215321361567,
+    "current": ["temperature_2m"],
+    "hourly": [],
+    "accept": "",
+    "expectedStatus": 200,
+    "expectedFormat": "OK"
   },
   {
-    "testCase": "Two character city",
-    "city": "Xi",
-    "expectedStatus": 200
+    "testCase": "One Longitude, Two Latitudes",
+    "city": "London",
+    "wind_speed_unit": "mph",
+    "precipitation_unit": "inch",
+    "latitude": [55, 32],
+    "longitude": 0.118092,
+    "current": ["temperature_2m"],
+    "hourly": [],
+    "accept": "",
+    "expectedStatus": 400,
+    "expectedFormat": "BAD REQUEST"
   },
   {
-    "testCase": "City with numbers",
-    "city": "City17",
-    "expectedStatus": 404
+    "testCase": "Empty Request",
+    "city": "London",
+    "wind_speed_unit": "",
+    "precipitation_unit": "",
+    "latitude": "",
+    "longitude": "",
+    "current": [],
+    "hourly": [],
+    "accept": "",
+    "expectedStatus": 400,
+    "expectedFormat": "BAD REQUEST"
   },
   {
-    "testCase": "Lowercase city",
-    "city": "london",
-    "expectedStatus": 200
-  },
-  {
-    "testCase": "UPPERCASE city",
-    "city": "LONDON",
-    "expectedStatus": 200
-  },
-  {
-    "testCase": "Mixed case city",
-    "city": "LoNdOn",
-    "expectedStatus": 200
-  },
-  {
-    "testCase": "City with hyphen",
-    "city": "Winston-Salem",
-    "expectedStatus": 200
-  },
-  {
-    "testCase": "City with apostrophe",
-    "city": "L'Aquila",
-    "expectedStatus": 200
-  },
-  {
-    "testCase": "Very short valid city",
-    "city": "Ur",
-    "expectedStatus": 200
+    "testCase": "Multiple Units",
+    "city": "London",
+    "wind_speed_unit": ["mph", "kn"],
+    "precipitation_unit": "inch",
+    "latitude": null,
+    "longitude": 0.118092,
+    "current": ["temperature_2m"],
+    "hourly": [],
+    "accept": "",
+    "expectedStatus": 403,
+    "expectedFormat": "Forbidden"
   }
 ]

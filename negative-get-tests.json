@@ -1,42 +1,105 @@
 [
   {
-    "testCase": "Empty city parameter",
-    "city": "",
-    "expectedStatus": 400
+    "testCase": "Empty Latitude",
+    "city": "London",
+    "wind_speed_unit": "mph",
+    "precipitation_unit": "inch",
+    "latitude": null,
+    "longitude": 0.118092,
+    "current": ["temperature_2m"],
+    "hourly": [],
+    "accept": "",
+    "expectedStatus": 403,
+    "expectedFormat": "Forbidden"
   },
   {
-    "testCase": "Non-existent city",
-    "city": "XYZ123InvalidCity",
-    "expectedStatus": 404
+    "testCase": "String Latitude",
+    "city": "London",
+    "wind_speed_unit": "mph",
+    "precipitation_unit": "inch",
+    "latitude": "Hello, World",
+    "longitude": 0.118092,
+    "current": ["temperature_2m"],
+    "hourly": [],
+    "accept": "",
+    "expectedStatus": 400,
+    "expectedFormat": "JSON"
   },
   {
-    "testCase": "Only numbers",
-    "city": "12345",
-    "expectedStatus": 404
+    "testCase": "Wrong Current Values",
+    "city": "London",
+    "wind_speed_unit": "mph",
+    "precipitation_unit": "inch",
+    "latitude": 51.509865,
+    "longitude": 0.118092,
+    "current": ["teperature_2m"],
+    "hourly": [],
+    "accept": "",
+    "expectedStatus": 400,
+    "expectedFormat": "JSON"
   },
   {
-    "testCase": "Special characters only",
-    "city": "!@#$%",
-    "expectedStatus": 400
+    "testCase": "Empty Longitude",
+    "city": "London",
+    "wind_speed_unit": "mph",
+    "precipitation_unit": "inch",
+    "latitude": 51.509865,
+    "longitude": null,
+    "current": ["temperature_2m"],
+    "hourly": [],
+    "accept": "",
+    "expectedStatus": 403,
+    "expectedFormat": "Forbidden"
   },
   {
-    "testCase": "Very long city name",
-    "city": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-    "expectedStatus": 400
+    "testCase": "Wrong Hourly Request",
+    "city": "London",
+    "wind_speed_unit": "mph",
+    "precipitation_unit": "inch",
+    "latitude": 51.509865,
+    "longitude": 0.118092,
+    "current": ["temperature_2m"],
+    "hourly": ["teperature_2m"],
+    "accept": "",
+    "expectedStatus": 400,
+    "expectedFormat": "JSON"
   },
   {
-    "testCase": "SQL injection attempt",
-    "city": "London'; DROP TABLE cities;--",
-    "expectedStatus": 400
+    "testCase": "Wrong Wind Speed Unit",
+    "city": "London",
+    "wind_speed_unit": "water",
+    "precipitation_unit": "inch",
+    "latitude": 51.509865,
+    "longitude": 0.118092,
+    "current": [],
+    "hourly": [],
+    "accept": "",
+    "expectedStatus": 400,
+    "expectedFormat": "JSON"
   },
   {
-    "testCase": "Script injection",
-    "city": "<script>alert('test')</script>",
-    "expectedStatus": 400
+    "testCase": "Wrong Precipitation Unit",
+    "city": "London",
+    "wind_speed_unit": "mph",
+    "precipitation_unit": "water",
+    "latitude": 51.509865,
+    "longitude": 0.118092,
+    "current": [],
+    "hourly": [],
+    "accept": "",
+    "expectedStatus": 400,
+    "expectedFormat": "JSON"
   },
   {
-    "testCase": "Null value",
-    "city": "null",
-    "expectedStatus": 404
+    "testCase": "Number Units",
+    "city": "London",
+    "wind_speed_unit": 1,
+    "precipitation_unit": 2,
+    "latitude": 51.509865,
+    "longitude": 0.118092,
+    "current": [],
+    "hourly": [],
+    "expectedStatus": 400,
+    "expectedFormat": "JSON"
   }
 ]
